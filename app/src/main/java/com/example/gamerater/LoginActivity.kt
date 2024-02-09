@@ -8,35 +8,37 @@ import com.example.gamerater.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       /* binding.terminos.setOnClickListener {
-            if (binding.terminos.isActivated) {
-                Toast.makeText(this, "has aceptado los terminos", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Debes de aceptar los terminos", Toast.LENGTH_SHORT).show()
-
-            }*/
-            binding.next.setOnClickListener {
+        binding.next.setOnClickListener {
+            // Verificar si se han aceptado los términos y condiciones
+            if (binding.terminos.isChecked) {
+                // El checkbox de términos y condiciones está marcado
                 if (binding.email.text.isEmpty()) {
                     Toast.makeText(this, "Debe de introducir un email", Toast.LENGTH_SHORT).show()
+                } else if (binding.password.text.isEmpty()) {
+                    Toast.makeText(this, "Debe de introducir la contraseña", Toast.LENGTH_SHORT).show()
                 } else {
-                    if (binding.password.text.isEmpty()) {
-                        Toast.makeText(this, "Debe de introducir la contraseña", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        val intent = Intent(
-                            this,
-                            CreateGameActivity::class.java
-                        )
-
-
-                        startActivity(intent)
-                    }
+                    // Ambos campos están completados y el checkbox está marcado
+                    val intent = Intent(this, CreateGameActivity::class.java)
+                    startActivity(intent)
                 }
+            } else {
+                // El checkbox de términos y condiciones no está marcado
+                Toast.makeText(this, "Debes de aceptar los términos y condiciones", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Configurar el listener para el checkbox de términos y condiciones
+        binding.terminos.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                Toast.makeText(this, "Has aceptado los términos y condiciones", Toast.LENGTH_SHORT).show()
             }
         }
     }
+}
+
